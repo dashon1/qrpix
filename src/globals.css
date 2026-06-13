@@ -1,0 +1,186 @@
+css
+/* Mobile viewport and responsive fixes */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Gradient & Theme CSS Variables ─── */
+@layer base {
+  :root {
+    --bg-gradient-main: linear-gradient(to bottom right, #faf5ff, #fdf2f8, #fff7ed);
+    --bg-gradient-purple: linear-gradient(to right, #9333ea, #ec4899);
+    --bg-gradient-cta: linear-gradient(to right, #7c3aed, #db2777);
+    --bg-gradient-cta-hover: linear-gradient(to right, #6d28d9, #be185d);
+    --bg-gradient-success: linear-gradient(to right, #16a34a, #059669);
+    --bg-gradient-info: linear-gradient(to right, #2563eb, #0891b2);
+    --bg-gradient-warning: linear-gradient(to right, #ea580c, #dc2626);
+    --color-surface: 255, 255, 255;
+    --color-surface-muted: 249, 250, 251;
+    --color-text-primary: 17, 24, 39;
+    --color-text-secondary: 107, 114, 128;
+    --color-border: 243, 232, 255;
+
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+  }
+
+  /* Dark mode overrides */
+  .dark, [data-theme="dark"] {
+    --bg-gradient-main: linear-gradient(to bottom right, #1a0a2e, #1e1030, #1c1020);
+    --bg-gradient-purple: linear-gradient(to right, #7c3aed, #c026d3);
+    --bg-gradient-cta: linear-gradient(to right, #6d28d9, #a21caf);
+    --bg-gradient-cta-hover: linear-gradient(to right, #5b21b6, #86198f);
+    --bg-gradient-success: linear-gradient(to right, #15803d, #047857);
+    --bg-gradient-info: linear-gradient(to right, #1d4ed8, #0e7490);
+    --bg-gradient-warning: linear-gradient(to right, #c2410c, #b91c1c);
+    --color-surface: 30, 20, 50;
+    --color-surface-muted: 25, 15, 40;
+    --color-text-primary: 243, 244, 246;
+    --color-text-secondary: 156, 163, 175;
+    --color-border: 55, 40, 80;
+
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --bg-gradient-main: linear-gradient(to bottom right, #1a0a2e, #1e1030, #1c1020);
+      --bg-gradient-purple: linear-gradient(to right, #7c3aed, #c026d3);
+      --bg-gradient-cta: linear-gradient(to right, #6d28d9, #a21caf);
+      --bg-gradient-cta-hover: linear-gradient(to right, #5b21b6, #86198f);
+      --bg-gradient-success: linear-gradient(to right, #15803d, #047857);
+      --bg-gradient-info: linear-gradient(to right, #1d4ed8, #0e7490);
+      --bg-gradient-warning: linear-gradient(to right, #c2410c, #b91c1c);
+      --color-surface: 30, 20, 50;
+      --color-surface-muted: 25, 15, 40;
+      --color-text-primary: 243, 244, 246;
+      --color-text-secondary: 156, 163, 175;
+      --color-border: 55, 40, 80;
+
+      --background: 0 0% 3.9%;
+      --foreground: 0 0% 98%;
+    }
+    :root:not(.light) body {
+      background-color: hsl(0 0% 3.9%);
+      color: hsl(0 0% 98%);
+    }
+  }
+}
+
+/* Utility classes for theme-aware gradients */
+@layer utilities {
+  .bg-theme-main {
+    background: var(--bg-gradient-main);
+  }
+  .bg-theme-cta {
+    background: var(--bg-gradient-cta);
+  }
+  .bg-theme-cta-hover:hover {
+    background: var(--bg-gradient-cta-hover);
+  }
+  .bg-theme-surface {
+    background-color: rgb(var(--color-surface));
+  }
+  .bg-theme-surface-muted {
+    background-color: rgb(var(--color-surface-muted));
+  }
+  .bg-theme-surface\/95 {
+    background-color: rgba(var(--color-surface), 0.95);
+  }
+  .text-theme-primary {
+    color: rgb(var(--color-text-primary));
+  }
+  .text-theme-secondary {
+    color: rgb(var(--color-text-secondary));
+  }
+  .border-theme {
+    border-color: rgb(var(--color-border));
+  }
+}
+
+/* Ensure proper mobile scaling */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  body {
+    @apply overflow-x-hidden;
+    overscroll-behavior-y: none;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  img, video {
+    @apply max-w-full h-auto;
+  }
+}
+
+/* Fix for iOS Safari zoom on input focus */
+@layer base {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ─── Mobile Tap Targets ─── */
+@layer utilities {
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Ensure all buttons and interactive elements meet 44px on mobile */
+@media (max-width: 767px) {
+  button, 
+  [role="button"],
+  a[href],
+  input[type="checkbox"],
+  input[type="radio"],
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Switch controls */
+  button[role="switch"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Photo protection: disable long-press save on mobile */
+@layer utilities {
+  .select-none {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+  }
+}
+
+/* Prevent long-press context menu on images/video in the gallery */
+.photo-protected {
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+
+/* Prevent selection on buttons and navigation */
+button, a, nav, [role="navigation"], [role="menuitem"], [role="button"] {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  user-select: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Pull to refresh indicator */
+.pull-refresh-indicator {
+  transition: transform 0.2s ease-out;
+}
